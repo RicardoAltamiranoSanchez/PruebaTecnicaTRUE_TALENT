@@ -1,26 +1,26 @@
-# API Contract - True Talent Transaction System
+# Contrato de API - Sistema de Transacciones True Talent
 
-## Base URL
+## URL Base
 `http://localhost:8000`
 
-## Authentication
-All endpoints (except Login and Health Check) require a Bearer Token.
-**Header:** `Authorization: Bearer <your_access_token>`
+## Autenticación
+Todos los endpoints (excepto Login y Health Check) requieren un Token Bearer.
+**Header:** `Authorization: Bearer <tu_token_de_acceso>`
 
 ---
 
-## 1. Authentication
+## 1. Autenticación
 
-### **Login**
-Obtain an access token to authenticate future requests.
+### **Login (Iniciar Sesión)**
+Obtiene un token de acceso para autenticar futuras solicitudes.
 
 - **Endpoint:** `POST /auth/login`
 - **Content-Type:** `application/x-www-form-urlencoded`
-- **Body:**
+- **Cuerpo (Body):**
   - `username`: "TRUE"
   - `password`: "TALENT"
 
-**Response (200 OK):**
+**Respuesta (200 OK):**
 ```json
 {
   "access_token": "eyJhbGciOiJIUzI1NiIsInR...",
@@ -30,17 +30,17 @@ Obtain an access token to authenticate future requests.
 
 ---
 
-## 2. Transactions
+## 2. Transacciones
 
-### **List Transactions (Paginated)**
-Retrieve a paginated list of transactions.
+### **Listar Transacciones (Paginado)**
+Obtiene una lista paginada de transacciones.
 
 - **Endpoint:** `GET /transactions/`
-- **Query Parameters:**
-  - `page`: Page number (default: 1)
-  - `size`: Items per page (default: 10)
+- **Parámetros de Consulta (Query Params):**
+  - `page`: Número de página (por defecto: 1)
+  - `size`: Elementos por página (por defecto: 10)
 
-**Response (200 OK):**
+**Respuesta (200 OK):**
 ```json
 {
   "items": [
@@ -61,11 +61,11 @@ Retrieve a paginated list of transactions.
 }
 ```
 
-### **Create Transaction (Synchronous)**
-Create a new transaction immediately. Requires an idempotency key to prevent duplicates.
+### **Crear Transacción (Síncrona)**
+Crea una nueva transacción inmediatamente. Requiere una clave de idempotencia para prevenir duplicados.
 
 - **Endpoint:** `POST /transactions/create`
-- **Body (JSON):**
+- **Cuerpo (JSON):**
 ```json
 {
   "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -75,7 +75,7 @@ Create a new transaction immediately. Requires an idempotency key to prevent dup
 }
 ```
 
-**Response (200 OK):**
+**Respuesta (200 OK):**
 ```json
 {
   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -88,11 +88,11 @@ Create a new transaction immediately. Requires an idempotency key to prevent dup
 }
 ```
 
-### **Async Process Transaction**
-Submit a transaction to be processed asynchronously via a worker queue (Redis).
+### **Procesar Transacción Asíncrona**
+Envía una transacción para ser procesada asíncronamente a través de una cola de trabajo (Redis).
 
 - **Endpoint:** `POST /transactions/async-process`
-- **Body (JSON):**
+- **Cuerpo (JSON):**
 ```json
 {
   "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -101,7 +101,7 @@ Submit a transaction to be processed asynchronously via a worker queue (Redis).
 }
 ```
 
-**Response (200 OK):**
+**Respuesta (200 OK):**
 ```json
 {
   "id": "generated-uuid",
@@ -112,35 +112,35 @@ Submit a transaction to be processed asynchronously via a worker queue (Redis).
 
 ---
 
-## 3. Assistant (Third-Party Integration)
+## 3. Asistente (Integración de Terceros)
 
-### **Summarize Text**
-Generates a summary of the provided text using OpenAI (or simulation mode if API Key is missing). Logs the request and response in the database.
+### **Resumir Texto**
+Genera un resumen del texto proporcionado utilizando OpenAI (o modo simulación si falta la API Key). Registra la solicitud y la respuesta en la base de datos.
 
 - **Endpoint:** `POST /assistant/summarize`
-- **Body (JSON):**
+- **Cuerpo (JSON):**
 ```json
 {
-  "text": "Long text to be summarized..."
+  "text": "Texto largo para ser resumido..."
 }
 ```
 
-**Response (200 OK):**
+**Respuesta (200 OK):**
 ```json
 {
-  "summary": "This is the generated summary..."
+  "summary": "Este es el resumen generado..."
 }
 ```
 
 ---
 
-## 4. Real-Time Updates
+## 4. Actualizaciones en Tiempo Real
 
-### **WebSocket Stream**
-Listen for real-time transaction status updates.
+### **Stream WebSocket**
+Escucha actualizaciones de estado de transacciones en tiempo real.
 
 - **URL:** `ws://localhost:8000/transactions/stream`
-- **Message Format (Received):**
+- **Formato de Mensaje (Recibido):**
 ```json
 {
   "type": "transaction_update",

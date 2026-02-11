@@ -42,8 +42,7 @@ El sistema se compone de 6 microservicios orquestados con Docker Compose:
 
 1.  **Clonar el repositorio**:
     ```bash
-    git clone <url-repo>
-    cd PruebaTecnicaPython
+    git clone https://github.com/RicardoAltamiranoSanchez/PruebaTecnicaTRUE_TALENT.git
     ```
 
 2.  **Configurar Entorno**:

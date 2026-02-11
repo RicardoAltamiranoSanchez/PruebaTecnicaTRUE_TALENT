@@ -2,7 +2,7 @@
     "info": {
         "_postman_id": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
         "name": "PRUEBA TÉCNICA TRUE TALENT ",
-        "description": "Colección con Autenticación Manual.\n\n### Instrucciones:\n1. Ejecuta primero la petición **'Login'** en la carpeta Auth.\n2. Esto guardará automáticamente el token en la variable `access_token`.\n3. Ahora puedes ejecutar cualquier otra petición (Transactions, etc.) y funcionará.\n\nSi el token expira (30 min), vuelve a ejecutar 'Login'.",
+        "description": "### Instrucciones:\n1. Ejecuta primero la petición **'Login'** en la carpeta Auth.\n2. Esto guardará automáticamente el token en la variable `access_token`.\n3. Ahora puedes ejecutar cualquier otra petición (Transactions, etc.) y funcionará.\n\nSi el token expira (30 min), vuelve a ejecutar 'Login'.",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [{

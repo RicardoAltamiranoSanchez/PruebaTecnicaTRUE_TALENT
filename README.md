@@ -134,4 +134,4 @@ Para facilitar la revisión y el manejo de la prueba técnica, se han incluido *
 ### 👨‍💻 Equipo de Desarrollo
 
 **Desarrollador**: Ricardo Altamirano Sanchez
-*True Talent Technical Test - 2026*
+

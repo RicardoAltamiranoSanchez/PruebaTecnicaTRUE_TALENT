@@ -1,0 +1,208 @@
+openapi: 3.0.0
+info:
+  title: True Talent Transaction System API
+  description: API for managing transactions, including real-time updates and asynchronous processing.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Local Development Server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        monto:
+          type: number
+        tipo:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        processed_at:
+          type: string
+          format: date-time
+          nullable: true
+    TransactionCreate:
+      type: object
+      required:
+        - user_id
+        - monto
+        - tipo
+        - idempotency_key
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        monto:
+          type: number
+        tipo:
+          type: string
+        idempotency_key:
+          type: string
+    AsyncProcessRequest:
+      type: object
+      required:
+        - user_id
+        - monto
+        - tipo
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        monto:
+          type: number
+        tipo:
+          type: string
+    PaginatedResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+        total:
+          type: integer
+        page:
+          type: integer
+        size:
+          type: integer
+        pages:
+          type: integer
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    Token:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+    SummarizeRequest:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+    SummarizeResponse:
+      type: object
+      properties:
+        summary:
+          type: string
+paths:
+  /auth/login:
+    post:
+      summary: Login to get access token
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '401':
+          description: Invalid credentials
+  /transactions/:
+    get:
+      summary: List transactions with pagination
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: size
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Paginated list of transactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResponse'
+  /transactions/create:
+    post:
+      summary: Create a synchronous transaction
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionCreate'
+      responses:
+        '200':
+          description: Transaction created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+  /transactions/async-process:
+    post:
+      summary: Process transaction asynchronously
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AsyncProcessRequest'
+      responses:
+        '200':
+          description: Transaction enqueued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+  /assistant/summarize:
+    post:
+      summary: Summarize text using AI
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SummarizeRequest'
+      responses:
+        '200':
+          description: Summary generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SummarizeResponse'

@@ -78,9 +78,45 @@ El sistema se compone de 6 microservicios orquestados con Docker Compose:
     ```
 
 3.  **Iniciar Servicios**:
-    ```bash
-    docker compose up --build
+    Se han incluido scripts para facilitar la ejecución en cualquier sistema operativo.
+    
+    ### 🪟 Windows (PowerShell)
+    Ejecuta el script `manage.ps1`.
+    
+    > **Nota Importante:** Si es la primera vez que ejecutas scripts, debes habilitar los permisos ejecutando este comando como Administrador:
+    > `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+    
+    ```powershell
+    # Levantar todo el sistema
+    .\manage.ps1 up
+    
+    # Ver logs en tiempo real
+    .\manage.ps1 logs
+    
+    # Reiniciar solo el RPA (útil para pruebas)
+    .\manage.ps1 restart-rpa
+    
+    # Detener todo
+    .\manage.ps1 down
     ```
+
+    ### 🐧 Linux / macOS / WSL
+    Ejecuta los comandos con `make`:
+    ```bash
+    # Levantar todo el sistema
+    make up
+    
+    # Ver logs en tiempo real
+    make logs
+    
+    # Reiniciar solo el RPA
+    make restart-rpa
+    
+    # Detener todo
+    make down
+    ```
+
+    > **Nota:** Si prefieres no usar scripts, puedes usar los comandos estándar de Docker Compose: `docker compose up --build -d`.
 
 4.  **Acceder a la Aplicación**:
     -   **Frontend (Dashboard)**: [http://localhost:3000](http://localhost:3000)
